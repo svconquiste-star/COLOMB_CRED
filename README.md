@@ -8,7 +8,7 @@ Landing page de atendimento via WhatsApp, configurada para deploy em Coolify com
 - **Deployment**: Coolify + Traefik
 - **Meta Pixel 1**: `1624012508885708` (Core Config compliance)
 - **Meta Pixel 2**: `1270209555097956`
-- **WhatsApp**: `5531973578043`
+- **WhatsApp**: `5531971775328`
 
 ## Instalação Local
 
