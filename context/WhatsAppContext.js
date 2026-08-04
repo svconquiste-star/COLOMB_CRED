@@ -2,7 +2,7 @@
 
 import { createContext, useContext } from 'react';
 
-const WHATSAPP_PHONE = '5531989592296';
+const WHATSAPP_PHONE = '5531984213573';
 
 const WhatsAppContext = createContext({
   phone: WHATSAPP_PHONE,
