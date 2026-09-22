@@ -10,11 +10,37 @@ const WhatsAppContext = createContext({
 });
 
 export function WhatsAppProvider({ children }) {
-  const buildLink = ({ nome, cidade, telefone }) => {
+  const buildLink = ({
+    nome,
+    cidade,
+    telefone,
+    ocupacao,
+    vinculo,
+    rendaMensal,
+    valorDesejado,
+    nomeEmpresa,
+  }) => {
     const n = nome ? nome.trim() : '[NOME]';
     const c = cidade ? cidade.trim() : '[CIDADE]';
     const t = telefone || '[TELEFONE]';
-    const message = `Olá! Sou ${n}. Quero falar com um especialista. Moro em ${c} e meu telefone é ${t}`;
+    const o = ocupacao ? ocupacao.trim() : '[OCUPAÇÃO]';
+    const v = vinculo || '[VÍNCULO]';
+    const r = rendaMensal || '[RENDA]';
+    const vd = valorDesejado || '[VALOR]';
+
+    let message = `Olá! Sou ${n}. Quero falar com um especialista.\n` +
+      `Ocupação: ${o}\n` +
+      `Vínculo: ${v}\n`;
+
+    if (vinculo === 'PJ' && nomeEmpresa) {
+      message += `Empresa: ${nomeEmpresa.trim()}\n`;
+    }
+
+    message += `Cidade: ${c}\n` +
+      `Renda mensal: ${r}\n` +
+      `Valor desejado: ${vd}\n` +
+      `Telefone: ${t}`;
+
     return `https://wa.me/${WHATSAPP_PHONE}?text=${encodeURIComponent(message)}`;
   };
 
