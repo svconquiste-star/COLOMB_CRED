@@ -142,10 +142,6 @@ export default function Page() {
     saveContactAsync({ ...contactBase, whatsappLink: link });
   };
 
-  const handleCltRejectedBack = () => {
-    setCltRejected(false);
-  };
-
   const saveContactAsync = async (data) => {
     try {
       const response = await fetch('/api/save-contact', {
@@ -264,9 +260,6 @@ export default function Page() {
               <p className="subtitle">
                 Assim que abrirmos vagas para quem trabalha de carteira assinada (CLT), avisaremos por aqui. Obrigado pelo interesse!
               </p>
-              <button className="btn-secondary" type="button" onClick={handleCltRejectedBack}>
-                Voltar
-              </button>
             </div>
           )}
 
