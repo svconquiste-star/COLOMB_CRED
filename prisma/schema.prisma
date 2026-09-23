@@ -1,0 +1,35 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Contact {
+  id              String    @id @default(cuid())
+  projeto         String    @db.VarChar(255)   // fixo: 'COLOMB-CRED'
+  nome            String    @db.VarChar(255)
+  ocupacao        String    @db.VarChar(255)
+  vinculo         String    @db.VarChar(10)    // 'CLT' ou 'PJ'
+  rendaMensal     Decimal   @db.Decimal(12, 2)
+  valorDesejado   Decimal   @db.Decimal(12, 2)
+  nomeEmpresa     String?   @db.VarChar(255)   // nome da empresa (PJ apenas)
+  telefone        String    @db.VarChar(20)
+  email           String?   @db.VarChar(255)
+  cidade          String    @db.VarChar(255)
+
+  whatsappLink    String?   @db.Text
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+  ipAddress       String?   @db.VarChar(45)
+  userAgent       String?   @db.Text
+
+  @@map("Contact_ColombCred")
+  @@index([telefone])
+  @@index([email])
+  @@index([vinculo])
+  @@index([createdAt])
+}

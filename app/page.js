@@ -118,6 +118,35 @@ export default function Page() {
       vinculo,
       valorDesejado: parseValorNumerico(valorDesejado),
     });
+
+    saveContactAsync({
+      nome: nome.trim(),
+      ocupacao: ocupacao.trim(),
+      vinculo,
+      telefone: phoneDigits,
+      email: email.trim() || undefined,
+      cidade: cidade.trim(),
+      rendaMensal: String(parseValorNumerico(rendaMensal)),
+      valorDesejado: String(parseValorNumerico(valorDesejado)),
+      nomeEmpresa: vinculo === 'PJ' ? nomeEmpresa.trim() : '',
+      whatsappLink: link,
+    });
+  };
+
+  const saveContactAsync = async (data) => {
+    try {
+      const response = await fetch('/api/save-contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+        keepalive: true,
+      });
+      if (!response.ok) {
+        console.warn('Erro ao salvar contato:', response.status);
+      }
+    } catch (error) {
+      console.warn('Erro ao conectar com servidor:', error);
+    }
   };
 
   return (
