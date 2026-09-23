@@ -29,6 +29,7 @@ export default function Page() {
   const [nomeEmpresa, setNomeEmpresa] = useState('');
 
   const [errors, setErrors] = useState({});
+  const [cltRejected, setCltRejected] = useState(false);
 
   const phoneDigits = useMemo(() => String(telefone || '').replace(/\D/g, ''), [telefone]);
   const phoneResult = useMemo(() => validatePhone(phoneDigits), [phoneDigits]);
@@ -97,6 +98,25 @@ export default function Page() {
 
     setErrors({});
 
+    const contactBase = {
+      nome: nome.trim(),
+      ocupacao: ocupacao.trim(),
+      vinculo,
+      telefone: phoneDigits,
+      email: email.trim() || undefined,
+      cidade: cidade.trim(),
+      rendaMensal: String(parseValorNumerico(rendaMensal)),
+      valorDesejado: String(parseValorNumerico(valorDesejado)),
+      nomeEmpresa: vinculo === 'PJ' ? nomeEmpresa.trim() : '',
+    };
+
+    if (vinculo === 'CLT') {
+      // Não abre WhatsApp, não dispara Pixel — só registra no banco para controle.
+      saveContactAsync(contactBase);
+      setCltRejected(true);
+      return;
+    }
+
     const link = buildLink({
       nome: nome.trim(),
       cidade: cidade.trim(),
@@ -119,18 +139,11 @@ export default function Page() {
       valorDesejado: parseValorNumerico(valorDesejado),
     });
 
-    saveContactAsync({
-      nome: nome.trim(),
-      ocupacao: ocupacao.trim(),
-      vinculo,
-      telefone: phoneDigits,
-      email: email.trim() || undefined,
-      cidade: cidade.trim(),
-      rendaMensal: String(parseValorNumerico(rendaMensal)),
-      valorDesejado: String(parseValorNumerico(valorDesejado)),
-      nomeEmpresa: vinculo === 'PJ' ? nomeEmpresa.trim() : '',
-      whatsappLink: link,
-    });
+    saveContactAsync({ ...contactBase, whatsappLink: link });
+  };
+
+  const handleCltRejectedBack = () => {
+    setCltRejected(false);
   };
 
   const saveContactAsync = async (data) => {
@@ -244,7 +257,20 @@ export default function Page() {
             </>
           )}
 
-          {step === 2 && (
+          {step === 2 && cltRejected && (
+            <div className="reject-message">
+              <i className="fa-solid fa-circle-info" style={{ color: 'var(--brand)', fontSize: '28px' }}></i>
+              <p className="reject-title">No momento, atendemos apenas autônomos e empresas (PJ)</p>
+              <p className="subtitle">
+                Assim que abrirmos vagas para quem trabalha de carteira assinada (CLT), avisaremos por aqui. Obrigado pelo interesse!
+              </p>
+              <button className="btn-secondary" type="button" onClick={handleCltRejectedBack}>
+                Voltar
+              </button>
+            </div>
+          )}
+
+          {step === 2 && !cltRejected && (
             <>
               <div className="form-group">
                 <label className="label" htmlFor="ocupacao">

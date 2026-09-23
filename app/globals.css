@@ -213,6 +213,29 @@ button {
   background: rgba(0, 0, 0, 0.03);
 }
 
+/* ── Reject message ── */
+
+.reject-message {
+  display: grid;
+  justify-items: center;
+  gap: 10px;
+  text-align: center;
+  padding: 12px 0 4px;
+}
+
+.reject-title {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text);
+  margin: 0;
+}
+
+.reject-message .btn-secondary {
+  margin-top: 6px;
+  width: 100%;
+}
+
 /* ── CTA ── */
 
 .cta {
